@@ -101,7 +101,6 @@ public class Controller {
         view.displayWelcomeBanner();
 
         // Display All Items
-        view.displayAllItemsBanner();
         view.displayAllItems(itemList);
 
         // Provide option to continue or exit program

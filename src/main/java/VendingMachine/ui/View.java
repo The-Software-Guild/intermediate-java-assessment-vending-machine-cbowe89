@@ -17,10 +17,8 @@ public class View {
     }
 
         public int getStartMenuSelection() {
-        io.print("1. Continue");
-        io.print("2. Quit");
-
-        return io.readInt("Please select an option.", 1, 2);
+        return io.readInt("Enter 1 to CONTINUE or 2 to QUIT.",
+                1, 2);
     }
 
     // Print Main Menu
@@ -58,7 +56,7 @@ public class View {
 
     // Get selection for if user wants to buy another item
     public int getContinueBuyingSelection() {
-        io.print("Do you want to buy another item?");
+        io.print("\nDo you want to buy another item?");
         return io.readInt("Enter 1 for YES or 2 for NO.", 1, 2);
     }
 
@@ -72,6 +70,9 @@ public class View {
             io.printf(itemNum, i.getItemName(), i.getItemCost());
             itemNum++;
         }
+
+        // Print blank line after list for readability
+        io.print("");
     }
 
     public void displayPurchase(Item item, BigDecimal balance) {
@@ -79,12 +80,6 @@ public class View {
                 "\nCost: " + item.getItemCost() +
                 "\nRemaining Balance: " + balance);
     }
-
-    /*
-    public int getItemSelection(int itemListSize) {
-        return io.readInt("Please select an item", 1, itemListSize);
-    }
-     */
 
     // Print change to be returned to user
     public void printChange(HashMap<Coins, Integer> map) {
@@ -94,6 +89,7 @@ public class View {
     }
 
     public void displayWelcomeBanner() {
+        io.print("\n-------------------------------");
         io.print("Welcome to the Vending Machine!");
         io.print("-------------------------------");
     }
@@ -104,11 +100,11 @@ public class View {
 
     // banner and message
     public void mainMenuBanner() {
-        io.print("===== MAIN MENU =====");
+        io.print("\n===== MAIN MENU =====");
     }
 
     public void addFundsBanner() {
-        io.print("===== ADD FUNDS =====");
+        io.print("\n===== ADD FUNDS =====");
     }
 
     public BigDecimal addFundsPrompt() {
@@ -121,7 +117,7 @@ public class View {
 
 
     public void purchaseItemBanner() {
-        io.print("===== PURCHASE ITEM(S) =====");
+        io.print("\n===== PURCHASE ITEM(S) =====");
     }
 
     // Display successful purchase message
@@ -138,13 +134,13 @@ public class View {
     // Display Unknown Command message
     public void displayUnknownCommand() {
         //io.print("Invalid input. Please input 1, 2 or 3.\n");
-        io.print("===== UNKNOWN COMMAND =====");
+        io.print("\n===== UNKNOWN COMMAND =====");
         io.readString("Please hit enter to continue.");
     }
 
     // Display Error message
     public void displayErrorMessage(String errorMsg) {
-        io.print("===== ERROR =====");
+        io.print("\n===== ERROR =====");
         io.print(errorMsg);
         io.readString("Please hit enter to continue.");
     }

@@ -54,7 +54,7 @@ public class FileDaoImpl implements FileDao {
     @Override
     public String marshallItem (Item item) {
         return item.getItemName() + DELIMITER + item.getItemCost() + DELIMITER
-                + item.getItemQuantity() + "\n";
+                + item.getItemQuantity();
     }
 
     @Override
