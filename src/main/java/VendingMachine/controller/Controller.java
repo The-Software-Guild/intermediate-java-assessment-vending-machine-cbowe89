@@ -50,23 +50,32 @@ public class Controller {
                 new BigDecimal("0.0").setScale(2, HALF_UP);
 
         // Declare and initialize variables
-        boolean runApplication = true, initialRun = true;
-        int mainMenuSelection = 0;
+        boolean runApplication = true;
+        int startMenuSelection = 0, mainMenuSelection = 0;
         List<Item> itemList = serviceLayer.getAllItems(); // List of all items
 
+        // Display welcome banner and item list
+        view.displayWelcomeBanner();
+        view.displayAllItems(itemList);
+
         // Determine if user wants to use vending machine
-        runApplication = startUp(itemList);
+        startMenuSelection = view.getStartMenuSelection();
+        switch (startMenuSelection) {
+            case 1:
+                balance = view.addFundsDisplay(balance);
+                break;
+            case 2:
+                runApplication = false;
+                break;
+            default:
+                view.displayUnknownCommand();
+        }
+
 
         // Run Vending Machine or Exit
         try {
             // While runApplication is true
             while (runApplication) {
-                // User must add funds before continuing when first
-                if (initialRun) {
-                    balance = view.addFundsDisplay(balance);
-                    initialRun = false;
-                }
-
                 // Display the menu, update the menu selection from user input
                 mainMenuSelection = view.getMainMenuSelection();
 
@@ -96,23 +105,7 @@ public class Controller {
         }
     }
 
-    private boolean startUp(List<Item> itemList) {
-        int startMenuSelection = 0;
 
-        // Display Welcome Banner
-        view.displayWelcomeBanner();
-
-        // Display All Items
-        view.displayAllItems(itemList);
-
-        // Provide option to continue or exit program
-        // Get selection: 1 to use the vending machine, 2 to exit
-        startMenuSelection = view.getStartMenuSelection();
-
-        // Return true for 1 (use vending machine)
-        // or false for 2 (exit)
-        return startMenuSelection == 1;
-    }
 
     private void addFunds(BigDecimal balance) {
         //view.addFundsDisplay(balance);
