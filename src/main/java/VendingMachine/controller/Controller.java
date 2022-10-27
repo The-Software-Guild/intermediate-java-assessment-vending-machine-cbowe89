@@ -50,7 +50,7 @@ public class Controller {
                 new BigDecimal("0.0").setScale(2, HALF_UP);
 
         // Declare and initialize variables
-        boolean runApplication = true;
+        boolean runApplication = true, initialRun = true;
         int mainMenuSelection = 0;
         List<Item> itemList = serviceLayer.getAllItems(); // List of all items
 
@@ -61,9 +61,11 @@ public class Controller {
         try {
             // While runApplication is true
             while (runApplication) {
-                // User must add funds before continuing
-                if (balance.equals(new BigDecimal("0.0")))
-                    view.addFundsDisplay(balance);
+                // User must add funds before continuing when first
+                if (initialRun) {
+                    balance = view.addFundsDisplay(balance);
+                    initialRun = false;
+                }
 
                 // Display the menu, update the menu selection from user input
                 mainMenuSelection = view.getMainMenuSelection();

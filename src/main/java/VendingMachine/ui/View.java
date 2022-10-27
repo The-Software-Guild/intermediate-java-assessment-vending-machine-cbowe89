@@ -32,15 +32,16 @@ public class View {
     }
 
     // Add Money
-    public void addFundsDisplay(BigDecimal balance) {
+    public BigDecimal addFundsDisplay(BigDecimal balance) {
         addFundsBanner();
         displayBalance(balance);
-        BigDecimal fundsAdded = io.readBigDecimal(
+        balance = balance.add(io.readBigDecimal(
                 "Enter funds to add ($0 - $100): ",
-                new BigDecimal("0.0"), new BigDecimal("100.0"));
+                new BigDecimal(0), new BigDecimal(100)));
         fundsAddedMessage();
         displayBalance(balance);
         io.readString("Please hit enter to continue.");
+        return balance;
     }
 
     // Display balance
@@ -84,7 +85,7 @@ public class View {
     // Print change to be returned to user
     public void printChange(HashMap<Coins, Integer> map) {
         for(Coins c : map.keySet()) {
-            io.print(c.name() + "($" + c.getValue() + "): " + map.get(c) + "\n");
+            io.print(c.name() + "($" + c.getValue() + "): " + map.get(c));
         }
     }
 
