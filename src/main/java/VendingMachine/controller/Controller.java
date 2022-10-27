@@ -18,7 +18,6 @@ import static java.math.RoundingMode.HALF_UP;
  * It controls the flow of the application, allows for navigation via
  * the menu, and provides methods to interact with the VendingMachine.
  */
-
 public class Controller {
 
     // Declare VendingMachineView and VendingMachineServiceLayer objects
@@ -32,8 +31,7 @@ public class Controller {
      * @param serviceLayer VendingMachineService object
      * @throws PersistenceException Checked exception
      */
-    public Controller(View view,
-                      ServiceLayer serviceLayer)
+    public Controller(View view, ServiceLayer serviceLayer)
             throws PersistenceException {
         // Initialize View and Service
         this.view = view;
@@ -41,36 +39,41 @@ public class Controller {
     }
 
     /**
-     * Method controls the application when the menu system is displayed
+     * Method controls the application
      */
     public void run() throws PersistenceException {
         // Declare and initialize beginning balance of $0.00
-        BigDecimal balance = new BigDecimal("0.0").setScale(2, HALF_UP);
+        BigDecimal balance =
+                new BigDecimal("0.0").setScale(2, HALF_UP);
 
+        // Declare and initialize variables
         boolean runApplication = true;
-        int menuSelection = 0;
+        int mainMenuSelection = 0;
+        List<Item> itemList = serviceLayer.getAllItems(); // List of all items
 
-        // Display Welcome Banner
-        view.displayWelcomeBanner();
-        // Display All Items
-        view.displayAllItemsBanner();
-        List<Item> itemList = serviceLayer.getAllItems();
-        view.displayAllItems(itemList);
+        // Determine if user wants to use vending machine
+        runApplication = startUp(itemList);
 
+        // Run Vending Machine or Exit
         try {
+            // While runApplication is true
             while (runApplication) {
-                // Display the menu, update the menu selection from user input
-                menuSelection = getMenuSelection(balance);
+                // User must add funds before continuing
+                if (balance.equals(new BigDecimal("0.0")))
+                    view.addFundsDisplay(balance);
 
-                switch (menuSelection) {
+                // Display the menu, update the menu selection from user input
+                mainMenuSelection = view.getMainMenuSelection();
+
+                switch (mainMenuSelection) {
                     case 1 ->  // Add funds to balance
                             addFunds(balance);
                     case 2 ->  // Buy Items
                             purchaseItems(balance, itemList);
                     case 3 -> { // Quit VendingMachine
                         try {
-                            // Display end balance/change due and quit
-                            quit(balance);
+                            // Display end balance/change due and exit
+                            dispenseChangeAndQuit(balance);
                         } catch (InsufficientFundsException e) {
                             view.displayBalance(balance);
                             view.displayErrorMessage(e.getMessage());
@@ -88,18 +91,26 @@ public class Controller {
         }
     }
 
-    /**
-     * Method asks the View to display the menu, displays the user's
-     * current balance, prompts the user to make a menu selection,
-     * and returns the menu selection to the Controller.
-     * @param balance User's current balance
-     * @return Menu selection
-     */
-    private int getMenuSelection(BigDecimal balance) {
-        return view.printMenuAndGetSelection();
+    private boolean startUp(List<Item> itemList) {
+        int startMenuSelection = 0;
+
+        // Display Welcome Banner
+        view.displayWelcomeBanner();
+
+        // Display All Items
+        view.displayAllItemsBanner();
+        view.displayAllItems(itemList);
+
+        // Provide option to continue or exit program
+        // Get selection: 1 to use the vending machine, 2 to exit
+        startMenuSelection = view.getStartMenuSelection();
+
+        // Return true for 1 (use vending machine)
+        // or false for 2 (exit)
+        return startMenuSelection == 1;
     }
 
-    public void addFunds(BigDecimal balance) {
+    private void addFunds(BigDecimal balance) {
         //view.addFundsDisplay(balance);
         view.addFundsBanner();
         view.displayBalance(balance);
@@ -108,7 +119,7 @@ public class Controller {
         view.displayBalance(updatedBalance);
     }
 
-    public BigDecimal purchaseItems(BigDecimal balance, List<Item> itemList)
+    public void purchaseItems(BigDecimal balance, List<Item> itemList)
             throws PersistenceException,
             ItemInventoryException,
             InsufficientFundsException {
@@ -135,12 +146,7 @@ public class Controller {
         }
     }
 
-    /*
-    private void dispenseChangeAndQuit(BigDecimal balance) {
-    }
-     */
-
-    public void quit(BigDecimal balance)
+    public void dispenseChangeAndQuit(BigDecimal balance)
             throws InsufficientFundsException {
         //implement
     }

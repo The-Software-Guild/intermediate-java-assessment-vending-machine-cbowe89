@@ -16,17 +16,15 @@ public class View {
         this.io = io;
     }
 
-    /*
-        public int getStartMenuSelection() throws PersistenceException {
+        public int getStartMenuSelection() {
         io.print("1. Continue");
         io.print("2. Quit");
 
         return io.readInt("Please select an option.", 1, 2);
     }
-     */
 
     // Print Main Menu
-    public int printMenuAndGetSelection() {
+    public int getMainMenuSelection() {
         mainMenuBanner();
         io.print("1. Add Money");
         io.print("2. Purchase Item");
@@ -58,7 +56,7 @@ public class View {
         return io.readInt("Please select an item", 1, itemListSize);
     }
 
-    /*
+    // Display list of all Items
     public void displayAllItems(List<Item> itemList) {
         displayAllItemsBanner();
 
@@ -69,21 +67,6 @@ public class View {
             itemNum++;
         }
     }
-     */
-
-    // Print all items
-    public void displayAllItems(List<Item> itemList) {
-        displayAllItemsBanner();
-        int j = 1;
-        ArrayList<String> list = new ArrayList<>();
-        list.add(0,"null");
-        for(Item i : itemList) {
-            io.print(j + ". " + i.toString());
-            list.add(j, i.getItemName());
-            j++;
-        }
-    }
-
 
     public void displayPurchase(Item item, BigDecimal balance) {
         io.print("Purchased: " + item.getItemName() +
@@ -110,7 +93,7 @@ public class View {
     }
 
     public void displayAllItemsBanner() {
-        io.print("===== Vending Machine Items =====");
+        io.print("\n===== Vending Machine Items =====");
     }
 
     // banner and message
@@ -150,12 +133,13 @@ public class View {
     public void displayUnknownCommand() {
         //io.print("Invalid input. Please input 1, 2 or 3.\n");
         io.print("===== UNKNOWN COMMAND =====");
+        io.readString("Please hit enter to continue.");
     }
 
     // Display Error message
     public void displayErrorMessage(String errorMsg) {
         io.print("===== ERROR =====");
-        io.print(errorMsg); // removed + '\n'
-        //io.readString("Please hit enter to continue.");
+        io.print(errorMsg);
+        io.readString("Please hit enter to continue.");
     }
 }
