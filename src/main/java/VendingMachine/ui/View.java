@@ -140,6 +140,4 @@ public class View {
         io.print(errorMsg);
         io.readString("Please hit enter to continue.");
     }
-
-
 }

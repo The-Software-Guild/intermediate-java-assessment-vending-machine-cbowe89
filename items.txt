@@ -1,9 +1,10 @@
+Coca-Cola::1.45::14
 Snickers Bar::0.99::12
-CocaCola::1.99::14
-abc::1.98::7
-Canada Dry::2.49::5
-Potato Chip::3.49::97
-Pepsi::1.99::6
-Cheetos::2.99::-100
-Mountain Dew::5.99::16
+Pepsi::1.25::6
+Peanut Butter Crackers::2.40::-10
+Oreos::3.50::1
+Cheetos::1.99::0
+Mountain Dew::1.33::16
+RedBull::4.98::2
 Gum::0.49::11
+BBQ Chips::0.80::15
