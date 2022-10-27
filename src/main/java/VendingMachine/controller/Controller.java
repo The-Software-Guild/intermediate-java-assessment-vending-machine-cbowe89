@@ -12,8 +12,6 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 
-import static java.math.RoundingMode.HALF_UP;
-
 /**
  * The {@code VendingMachineController} class orchestrates the actions
  * of the other components in the application to accomplish the
@@ -127,16 +125,12 @@ public class Controller {
             itemSelection = view.getItemSelection(itemList.size());
             Item purchasedItem = itemList.get(itemSelection - 1);
 
+            // Sell Item
+            balance = serviceLayer.sellItem(balance, purchasedItem);
+
             // Display successful purchase info
             view.purchaseSuccessBanner();
             view.displayPurchase(purchasedItem, balance);
-
-            // Subtract itemCost from user balance
-            balance = balance.subtract(purchasedItem.getItemCost());
-
-            // Subtract 1 from inventory for item purchased
-            int newItemQuantity = purchasedItem.getItemQuantity() - 1;
-            serviceLayer.changeInventoryQuantity(purchasedItem, newItemQuantity);
 
             // Ask if user wants to buy another item
             buyAnother = view.getContinueBuyingSelection();

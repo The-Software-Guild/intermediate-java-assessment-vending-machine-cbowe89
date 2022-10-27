@@ -76,8 +76,7 @@ public class ServiceLayerImpl implements
 
         // Allow dao to sell item: subtract 1 from quantity
         // and subtract item cost from totalFunds
-        vendingMachineDao.changeItemQuantity(item,
-                item.getItemQuantity()-1);
+        changeInventoryQuantity(item, item.getItemQuantity()-1);
         return totalFunds = totalFunds.subtract(item.getItemCost());
     }
 
@@ -92,7 +91,7 @@ public class ServiceLayerImpl implements
 
     private void validateSufficientFunds (BigDecimal balance, BigDecimal itemCost) throws
             InsufficientFundsException {
-        if (itemCost.compareTo(balance) < 0) {
+        if (itemCost.compareTo(balance) > 0) {
             throw new InsufficientFundsException("ERROR: $" + balance +
                     " is insufficient to purchase selected item.");
         }
