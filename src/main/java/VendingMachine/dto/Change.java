@@ -1,5 +1,7 @@
 package VendingMachine.dto;
 
+import VendingMachine.service.InsufficientFundsException;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.HashMap;
@@ -10,14 +12,19 @@ import static VendingMachine.dto.Coins.NICKEL;
 import static VendingMachine.dto.Coins.PENNY;
 
 public class Change {
-
-    private HashMap<Coins, Integer> coinChangeMap = new HashMap<>();
+    //private HashMap<Coins, Integer> coinChangeMap = new HashMap<>();
+    private static HashMap<Coins, Integer> coinChangeMap = new HashMap<>();
 
     public Change(HashMap<Coins, Integer> change) {
-        this.coinChangeMap = change;
+        coinChangeMap = change;
     }
 
-    public HashMap<Coins,Integer> getChange(BigDecimal funds) {
+    public static HashMap<Coins,Integer> getChange(BigDecimal funds) throws
+            InsufficientFundsException {
+        if (funds.compareTo(new BigDecimal("0.00")) < 1)
+            throw new InsufficientFundsException(
+                    "Unable to make change. Balance is less than $0.01.");
+
         int quarters = funds.divide(QUARTER.getValue(), RoundingMode.DOWN).intValue();
         coinChangeMap.put(QUARTER, quarters);
         int dimes = funds.divide(DIME.getValue(), RoundingMode.DOWN).intValue();

@@ -1,8 +1,6 @@
 package VendingMachine.service;
 
-import VendingMachine.dao.AuditDao;
-import VendingMachine.dao.VendingMachineDao;
-import VendingMachine.dao.PersistenceException;
+import VendingMachine.dao.*;
 import VendingMachine.dto.Item;
 import java.math.BigDecimal;
 import java.util.List;
@@ -16,7 +14,8 @@ public class ServiceLayerImpl implements
 
     public ServiceLayerImpl() throws
             PersistenceException {
-        //implement
+        VendingMachineDao dao = new VendingMachineDaoFileImpl();
+        AuditDao auditDao = new AuditDaoImpl();
     }
 
     public ServiceLayerImpl(VendingMachineDao vendingMachineDao,
@@ -27,10 +26,13 @@ public class ServiceLayerImpl implements
     }
 
     @Override
-    public Item getItem(String itemName) throws
+    public Item getItem(Item item) throws
             PersistenceException,
             ItemInventoryException {
-        return vendingMachineDao.getItem(itemName);
+        // Validate that item quantity is greater than 1
+        validateItemQuantity(item);
+
+        return vendingMachineDao.getItem(item.getItemName());
     }
 
     @Override
@@ -43,18 +45,22 @@ public class ServiceLayerImpl implements
 
     @Override
     public Item addItem(Item item) throws PersistenceException {
-        //implement
+        auditDao.writeAuditEntry(item.getItemName() + " added.");
+        return vendingMachineDao.addItem(item.getItemName(), item);
     }
 
     @Override
     public Item removeItem(Item item) throws PersistenceException {
-        //implement
+        auditDao.writeAuditEntry(item.getItemName() + " removed.");
+        return vendingMachineDao.removeItem(item);
     }
 
     @Override
     public Item changeInventoryQuantity(Item item, int newCount) throws
             PersistenceException {
-        //implement
+        auditDao.writeAuditEntry(item.getItemName() + " quantity changed to "
+                + newCount);
+        return vendingMachineDao.changeItemQuantity(item, newCount);
     }
 
     @Override
@@ -65,7 +71,13 @@ public class ServiceLayerImpl implements
         // Validate that item quantity is 1 or more
         validateItemQuantity(item);
 
-        // Allow dao to sell item
+        // Validate that totalFunds are greater than itemCost
+        validateSufficientFunds(totalFunds, item.getItemCost());
+
+        // Allow dao to sell item: subtract 1 from quantity
+        // and subtract item cost from totalFunds
+        vendingMachineDao.changeItemQuantity(item,
+                item.getItemQuantity()-1);
         return totalFunds = totalFunds.subtract(item.getItemCost());
     }
 
@@ -75,6 +87,14 @@ public class ServiceLayerImpl implements
             throw new ItemInventoryException(
                     "ERROR: " + item.getItemName() +
                             " Unavailable! Quantity is less than 1.");
+        }
+    }
+
+    private void validateSufficientFunds (BigDecimal balance, BigDecimal itemCost) throws
+            InsufficientFundsException {
+        if (itemCost.compareTo(balance) < 0) {
+            throw new InsufficientFundsException("ERROR: $" + balance +
+                    " is insufficient to purchase selected item.");
         }
     }
 }

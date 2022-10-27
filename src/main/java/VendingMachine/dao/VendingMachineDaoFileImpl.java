@@ -5,7 +5,7 @@ import java.util.*;
 
 public class VendingMachineDaoFileImpl implements VendingMachineDao {
     private final String ITEM_FILE;
-    private FileDao fileDao;
+    private final FileDao fileDao;
     private Map<String, Item> itemMap;
 
     public VendingMachineDaoFileImpl() throws PersistenceException {

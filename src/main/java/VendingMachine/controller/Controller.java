@@ -1,12 +1,15 @@
 package VendingMachine.controller;
 
 import VendingMachine.dao.PersistenceException;
+import VendingMachine.dto.Change;
+import VendingMachine.dto.Coins;
 import VendingMachine.dto.Item;
 import VendingMachine.service.InsufficientFundsException;
 import VendingMachine.service.ItemInventoryException;
 import VendingMachine.service.ServiceLayer;
 import VendingMachine.ui.View;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 
 import static java.math.RoundingMode.HALF_UP;
@@ -119,7 +122,7 @@ public class Controller {
         view.displayBalance(updatedBalance);
     }
 
-    public void purchaseItems(BigDecimal balance, List<Item> itemList)
+    private void purchaseItems(BigDecimal balance, List<Item> itemList)
             throws PersistenceException,
             ItemInventoryException,
             InsufficientFundsException {
@@ -134,6 +137,7 @@ public class Controller {
                 Item purchasedItem = itemList.get(itemSelection);
 
                 balance = balance.subtract(purchasedItem.getItemCost());
+                view.purchaseSuccessBanner();
                 view.displayPurchase(purchasedItem, balance);
 
                 int newItemQuantity = purchasedItem.getItemQuantity() - 1;
@@ -146,8 +150,10 @@ public class Controller {
         }
     }
 
-    public void dispenseChangeAndQuit(BigDecimal balance)
+    private void dispenseChangeAndQuit(BigDecimal balance)
             throws InsufficientFundsException {
         //implement
+        HashMap<Coins, Integer> changeMap = Change.getChange(balance);
+        view.printChange(changeMap);
     }
 }
