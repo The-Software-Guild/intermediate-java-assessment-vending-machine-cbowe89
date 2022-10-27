@@ -1,5 +1,7 @@
 package VendingMachine.dao;
 
+import VendingMachine.dao.VendingMachineDao;
+import VendingMachine.dao.VendingMachineDaoFileImpl;
 import VendingMachine.dto.Item;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -7,17 +9,18 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class VendingMachineDaoFileImplTest {
+public class VendingMachineDaoImplTest {
 
-    public static VendingMachineDao testVendingMachineDao;
+    public static VendingMachineDao testDao;
 
-    public VendingMachineDaoFileImplTest() {
+    public VendingMachineDaoImplTest() {
     }
 
     @BeforeAll
     public static void setUpClass() throws Exception {
-        testVendingMachineDao = new VendingMachineDaoFileImpl();
+        testDao = new VendingMachineDaoFileImpl();
     }
 
     @AfterAll
@@ -26,7 +29,7 @@ public class VendingMachineDaoFileImplTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-        testVendingMachineDao = new VendingMachineDaoFileImpl();
+        testDao = new VendingMachineDaoFileImpl();
     }
 
     @AfterEach
@@ -46,7 +49,7 @@ public class VendingMachineDaoFileImplTest {
      */
     @Test
     public void testListAllItems() throws Exception {
-        List<Item> testList = testVendingMachineDao.getAllItems();
+        List<Item> testList = testDao.getAllItems();
 
         //implement
     }
@@ -55,7 +58,7 @@ public class VendingMachineDaoFileImplTest {
      * Test of changeInventoryCount method, of class VendingMachineDaoImpl.
      */
     @Test
-    public void testChangeInventoryCount() throws Exception {
+    public void testChangeItemQuantity() throws Exception {
         //implement
     }
 }
