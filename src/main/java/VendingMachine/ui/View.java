@@ -108,10 +108,6 @@ public class View {
         io.print("\n===== ADD FUNDS =====");
     }
 
-    public BigDecimal addFundsPrompt() {
-        return io.readBigDecimal("Enter amount to add to current balance.");
-    }
-
     public void fundsAddedMessage() {
         io.print("Money added! Thank you.");
     }

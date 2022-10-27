@@ -24,8 +24,12 @@ import static java.math.RoundingMode.HALF_UP;
 public class Controller {
 
     // Declare VendingMachineView and VendingMachineServiceLayer objects
-    private final View view;
-    private final ServiceLayer serviceLayer;
+    private View view;
+    private ServiceLayer serviceLayer;
+
+    public Controller() throws PersistenceException {
+        // implement
+    }
 
     /**
      * Constructor initializes the view and dao objects
@@ -46,8 +50,7 @@ public class Controller {
      */
     public void run() throws PersistenceException {
         // Declare and initialize beginning balance of $0.00
-        BigDecimal balance =
-                new BigDecimal("0.0").setScale(2, HALF_UP);
+        BigDecimal balance = new BigDecimal(0);
 
         // Declare and initialize variables
         boolean runApplication = true;
@@ -61,16 +64,10 @@ public class Controller {
         // Determine if user wants to use vending machine
         startMenuSelection = view.getStartMenuSelection();
         switch (startMenuSelection) {
-            case 1:
-                balance = view.addFundsDisplay(balance);
-                break;
-            case 2:
-                runApplication = false;
-                break;
-            default:
-                view.displayUnknownCommand();
+            case 1 -> balance = addFunds(balance);
+            case 2 -> runApplication = false;
+            default -> view.displayUnknownCommand();
         }
-
 
         // Run Vending Machine or Exit
         try {
@@ -81,9 +78,16 @@ public class Controller {
 
                 switch (mainMenuSelection) {
                     case 1 ->  // Add funds to balance
-                            addFunds(balance);
-                    case 2 ->  // Buy Items
-                            purchaseItems(balance, itemList);
+                            balance = addFunds(balance);
+                    case 2 -> // Buy Items
+                        {
+                            try {
+                                balance = purchaseItems(balance, itemList);
+                            } catch (ItemInventoryException | InsufficientFundsException e) {
+                                view.displayBalance(balance);
+                                view.displayErrorMessage(e.getMessage());
+                            }
+                        }
                     case 3 -> { // Quit VendingMachine
                         try {
                             // Display end balance/change due and exit
@@ -99,52 +103,53 @@ public class Controller {
                 }
             }
             view.displayExitMessage();
-        } catch (PersistenceException | ItemInventoryException
-                 | InsufficientFundsException e) {
+        } catch (PersistenceException e) {
             view.displayErrorMessage(e.getMessage());
         }
     }
 
-
-
-    private void addFunds(BigDecimal balance) {
-        //view.addFundsDisplay(balance);
-        view.addFundsBanner();
-        view.displayBalance(balance);
-        BigDecimal updatedBalance =
-                balance.add(view.addFundsPrompt()).setScale(2, HALF_UP);
-        view.displayBalance(updatedBalance);
+    private BigDecimal addFunds(BigDecimal balance) {
+        return view.addFundsDisplay(balance);
     }
 
-    private void purchaseItems(BigDecimal balance, List<Item> itemList)
+    private BigDecimal purchaseItems(BigDecimal balance, List<Item> itemList)
             throws PersistenceException,
             ItemInventoryException,
             InsufficientFundsException {
-        boolean buyItem = true;
+        // Declare and initialize variables
+        boolean buyItem = true; // Updated after first purchase
         int itemSelection = 0, buyAnother = 0;
 
         view.purchaseItemBanner();
 
         while (buyItem) {
+            // Get itemSelection, store as purchasedItem
             itemSelection = view.getItemSelection(itemList.size());
             Item purchasedItem = itemList.get(itemSelection - 1);
 
-            balance = balance.subtract(purchasedItem.getItemCost());
+            // Display successful purchase info
             view.purchaseSuccessBanner();
             view.displayPurchase(purchasedItem, balance);
 
+            // Subtract itemCost from user balance
+            balance = balance.subtract(purchasedItem.getItemCost());
+
+            // Subtract 1 from inventory for item purchased
             int newItemQuantity = purchasedItem.getItemQuantity() - 1;
             serviceLayer.changeInventoryQuantity(purchasedItem, newItemQuantity);
 
+            // Ask if user wants to buy another item
             buyAnother = view.getContinueBuyingSelection();
 
+            // If buyAnother is true, buyItem stays true
+            // If buyAnother is false, buyItem becomes false, returns to menu
             buyItem = (buyAnother == 1);
         }
+        return balance;
     }
 
     private void dispenseChangeAndQuit(BigDecimal balance)
             throws InsufficientFundsException {
-        //implement
         HashMap<Coins, Integer> changeMap = Change.getChange(balance);
         view.printChange(changeMap);
     }
