@@ -58,8 +58,8 @@ public class ServiceLayerImpl implements
     @Override
     public void changeInventoryQuantity(Item item, int newCount) throws
             PersistenceException {
-        auditDao.writeAuditEntry(item.getItemName() + " quantity changed to "
-                + newCount);
+        auditDao.writeAuditEntry(item.getItemName() + " quantity updated to "
+                + newCount + ".");
         vendingMachineDao.changeItemQuantity(item, newCount);
     }
 
@@ -76,6 +76,7 @@ public class ServiceLayerImpl implements
 
         // Allow dao to sell item: subtract 1 from quantity
         // and subtract item cost from totalFunds
+        auditDao.writeAuditEntry("1 " + item.getItemName() + " sold.");
         changeInventoryQuantity(item, item.getItemQuantity()-1);
         return totalFunds = totalFunds.subtract(item.getItemCost());
     }

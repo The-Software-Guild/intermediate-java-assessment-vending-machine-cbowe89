@@ -27,12 +27,19 @@ public class Change {
 
         int quarters = funds.divide(QUARTER.getValue(), RoundingMode.DOWN).intValue();
         coinChangeMap.put(QUARTER, quarters);
+        funds = funds.subtract(QUARTER.getValue().multiply(BigDecimal.valueOf(quarters)));
+
         int dimes = funds.divide(DIME.getValue(), RoundingMode.DOWN).intValue();
         coinChangeMap.put(DIME, dimes);
+        funds = funds.subtract(DIME.getValue().multiply(BigDecimal.valueOf(dimes)));
+
         int nickels = funds.divide(NICKEL.getValue(), RoundingMode.DOWN).intValue();
         coinChangeMap.put(NICKEL, nickels);
+        funds = funds.subtract(NICKEL.getValue().multiply(BigDecimal.valueOf(nickels)));
+
         int pennies = funds.divide(PENNY.getValue(), RoundingMode.DOWN).intValue();
         coinChangeMap.put(PENNY, pennies);
+        funds = funds.subtract(PENNY.getValue().multiply(BigDecimal.valueOf(pennies)));
 
         return coinChangeMap;
     }

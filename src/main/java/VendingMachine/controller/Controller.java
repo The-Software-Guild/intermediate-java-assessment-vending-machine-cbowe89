@@ -117,24 +117,29 @@ public class Controller {
         // Declare and initialize variables
         int itemSelection = 0;
 
-        view.purchaseItemBanner();
+        if (balance.compareTo(new BigDecimal(0)) < 1) {
+            throw new InsufficientFundsException("Add money to make a purchase!");
+        }
+        else {
+            view.purchaseItemBanner();
 
-        // Re-display items for ease of use
-        view.displayAllItems(itemList);
+            // Re-display items for ease of use
+            view.displayAllItems(itemList);
 
-        // Get itemSelection, store as purchasedItem
-        itemSelection = view.getItemSelection(itemList.size());
-        Item purchasedItem = itemList.get(itemSelection - 1);
+            // Get itemSelection, store as purchasedItem
+            itemSelection = view.getItemSelection(itemList.size());
+            Item purchasedItem = itemList.get(itemSelection - 1);
 
-        // Sell Item
-        balance = serviceLayer.sellItem(balance, purchasedItem);
+            // Sell Item
+            balance = serviceLayer.sellItem(balance, purchasedItem);
 
-        // Display successful purchase info
-        view.purchaseSuccessBanner();
-        view.displayPurchase(purchasedItem, balance);
+            // Display successful purchase info
+            view.purchaseSuccessBanner();
+            view.displayPurchase(purchasedItem, balance);
 
-        HashMap<Coins, Integer> changeMap = Change.getChange(balance);
-        view.printChange(changeMap);
+            HashMap<Coins, Integer> changeMap = Change.getChange(balance);
+            view.printChange(changeMap);
+        }
 
         return balance = new BigDecimal(0);
     }
