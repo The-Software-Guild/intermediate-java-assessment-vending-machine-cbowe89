@@ -127,26 +127,24 @@ public class Controller {
             ItemInventoryException,
             InsufficientFundsException {
         boolean buyItem = true;
-        int itemSelection = 0;
+        int itemSelection = 0, buyAnother = 0;
 
         view.purchaseItemBanner();
 
-        try {
-            while (buyItem) {
-                itemSelection = view.getItemSelection(itemList.size());
-                Item purchasedItem = itemList.get(itemSelection);
+        while (buyItem) {
+            itemSelection = view.getItemSelection(itemList.size());
+            Item purchasedItem = itemList.get(itemSelection - 1);
 
-                balance = balance.subtract(purchasedItem.getItemCost());
-                view.purchaseSuccessBanner();
-                view.displayPurchase(purchasedItem, balance);
+            balance = balance.subtract(purchasedItem.getItemCost());
+            view.purchaseSuccessBanner();
+            view.displayPurchase(purchasedItem, balance);
 
-                int newItemQuantity = purchasedItem.getItemQuantity() - 1;
-                serviceLayer.changeInventoryQuantity(purchasedItem, newItemQuantity);
-            }
-        } catch (ItemInventoryException e) {
-            view.displayErrorMessage("ERROR: Item unavailable.");
-        } catch (InsufficientFundsException e) {
-            view.displayErrorMessage("ERROR: Insufficient funds.");
+            int newItemQuantity = purchasedItem.getItemQuantity() - 1;
+            serviceLayer.changeInventoryQuantity(purchasedItem, newItemQuantity);
+
+            buyAnother = view.getContinueBuyingSelection();
+
+            buyItem = (buyAnother == 1);
         }
     }
 

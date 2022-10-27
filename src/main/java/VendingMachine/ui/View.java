@@ -56,6 +56,12 @@ public class View {
         return io.readInt("Please select an item", 1, itemListSize);
     }
 
+    // Get selection for if user wants to buy another item
+    public int getContinueBuyingSelection() {
+        io.print("Do you want to buy another item?");
+        return io.readInt("Enter 1 for YES or 2 for NO.", 1, 2);
+    }
+
     // Display list of all Items
     public void displayAllItems(List<Item> itemList) {
         displayAllItemsBanner();
@@ -142,4 +148,6 @@ public class View {
         io.print(errorMsg);
         io.readString("Please hit enter to continue.");
     }
+
+
 }
