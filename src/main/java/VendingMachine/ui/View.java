@@ -78,14 +78,15 @@ public class View {
 
     public void displayPurchase(Item item, BigDecimal balance) {
         io.print("Purchased: " + item.getItemName() +
-                "\nCost: " + item.getItemCost() +
-                "\nRemaining Balance: " + balance);
+                "\nCost: $" + item.getItemCost() +
+                "\nRemaining Balance: $" + balance);
     }
 
     // Print change to be returned to user
     public void printChange(HashMap<Coins, Integer> map) {
+        io.print("\nDispensing Change:");
         for(Coins c : map.keySet()) {
-            io.print(c.name() + "($" + c.getValue() + "): " + map.get(c));
+            io.print("\t"+ c.name() + "($" + c.getValue() + "): " + map.get(c));
         }
     }
 

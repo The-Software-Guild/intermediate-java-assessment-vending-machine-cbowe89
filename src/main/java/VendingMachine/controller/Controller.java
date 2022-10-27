@@ -89,7 +89,7 @@ public class Controller {
                     case 3 -> { // Quit VendingMachine
                         try {
                             // Display end balance/change due and exit
-                            dispenseChangeAndQuit(balance);
+                            quit(balance);
                         } catch (InsufficientFundsException e) {
                             view.displayBalance(balance);
                             view.displayErrorMessage(e.getMessage());
@@ -120,31 +120,34 @@ public class Controller {
 
         view.purchaseItemBanner();
 
-        while (buyItem) {
-            // Get itemSelection, store as purchasedItem
-            itemSelection = view.getItemSelection(itemList.size());
-            Item purchasedItem = itemList.get(itemSelection - 1);
+        // Re-display items for ease of use
+        view.displayAllItems(itemList);
 
-            // Sell Item
-            balance = serviceLayer.sellItem(balance, purchasedItem);
+        // Get itemSelection, store as purchasedItem
+        itemSelection = view.getItemSelection(itemList.size());
+        Item purchasedItem = itemList.get(itemSelection - 1);
 
-            // Display successful purchase info
-            view.purchaseSuccessBanner();
-            view.displayPurchase(purchasedItem, balance);
+        // Sell Item
+        balance = serviceLayer.sellItem(balance, purchasedItem);
 
-            // Ask if user wants to buy another item
-            buyAnother = view.getContinueBuyingSelection();
+        // Display successful purchase info
+        view.purchaseSuccessBanner();
+        view.displayPurchase(purchasedItem, balance);
 
-            // If buyAnother is true, buyItem stays true
-            // If buyAnother is false, buyItem becomes false, returns to menu
-            buyItem = (buyAnother == 1);
-        }
-        return balance;
-    }
-
-    private void dispenseChangeAndQuit(BigDecimal balance)
-            throws InsufficientFundsException {
         HashMap<Coins, Integer> changeMap = Change.getChange(balance);
         view.printChange(changeMap);
+
+
+
+        return balance = new BigDecimal(0);
+    }
+
+    private void quit(BigDecimal balance)
+            throws InsufficientFundsException {
+        // Dispense change before exiting if balance is greater than $0.00
+        if (balance.compareTo(new BigDecimal(0)) > 0) {
+            HashMap<Coins, Integer> changeMap = Change.getChange(balance);
+            view.printChange(changeMap);
+        }
     }
 }
