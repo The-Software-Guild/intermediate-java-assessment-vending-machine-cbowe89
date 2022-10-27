@@ -4,13 +4,12 @@ import VendingMachine.dto.Coins;
 import VendingMachine.dto.Item;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class View {
     // Declare UserIO object
-    private UserIO io;
+    private final UserIO io;
 
     public View(UserIO io) {
         this.io = io;
@@ -52,13 +51,8 @@ public class View {
 
     // Get selection for item that user wants to purchase
     public int getItemSelection(int itemListSize) {
-        return io.readInt("Please select an item", 1, itemListSize);
-    }
-
-    // Get selection for if user wants to buy another item
-    public int getContinueBuyingSelection() {
-        io.print("\nDo you want to buy another item?");
-        return io.readInt("Enter 1 for YES or 2 for NO.", 1, 2);
+        return io.readInt("Please select an item",
+                1, itemListSize);
     }
 
     // Display list of all Items
@@ -94,6 +88,10 @@ public class View {
         io.print("\n-------------------------------");
         io.print("Welcome to the Vending Machine!");
         io.print("-------------------------------");
+    }
+
+    public void displayAddFundsReminder() {
+        io.print("\n*** Remember to add funds before selecting an item. ***");
     }
 
     public void displayAllItemsBanner() {

@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class FileDaoImpl implements FileDao {
-    private static Map<String, Item> itemMap = new HashMap<>();
+    private static final Map<String, Item> itemMap = new HashMap<>();
     private final String ITEM_FILE;
     private static final String DELIMITER = "::";
 

@@ -56,11 +56,11 @@ public class ServiceLayerImpl implements
     }
 
     @Override
-    public Item changeInventoryQuantity(Item item, int newCount) throws
+    public void changeInventoryQuantity(Item item, int newCount) throws
             PersistenceException {
         auditDao.writeAuditEntry(item.getItemName() + " quantity changed to "
                 + newCount);
-        return vendingMachineDao.changeItemQuantity(item, newCount);
+        vendingMachineDao.changeItemQuantity(item, newCount);
     }
 
     @Override

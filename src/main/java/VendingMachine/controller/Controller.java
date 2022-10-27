@@ -62,7 +62,7 @@ public class Controller {
         // Determine if user wants to use vending machine
         startMenuSelection = view.getStartMenuSelection();
         switch (startMenuSelection) {
-            case 1 -> balance = addFunds(balance);
+            case 1 -> view.displayAddFundsReminder();
             case 2 -> runApplication = false;
             default -> view.displayUnknownCommand();
         }
@@ -115,8 +115,7 @@ public class Controller {
             ItemInventoryException,
             InsufficientFundsException {
         // Declare and initialize variables
-        boolean buyItem = true; // Updated after first purchase
-        int itemSelection = 0, buyAnother = 0;
+        int itemSelection = 0;
 
         view.purchaseItemBanner();
 
@@ -136,8 +135,6 @@ public class Controller {
 
         HashMap<Coins, Integer> changeMap = Change.getChange(balance);
         view.printChange(changeMap);
-
-
 
         return balance = new BigDecimal(0);
     }
