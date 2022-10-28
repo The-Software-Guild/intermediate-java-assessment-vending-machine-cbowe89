@@ -132,6 +132,8 @@ public class Controller {
 
             // Sell Item
             balance = serviceLayer.sellItem(balance, purchasedItem);
+            purchasedItem = serviceLayer.changeInventoryQuantity(purchasedItem,
+                    purchasedItem.getItemQuantity()-1);
 
             // Display successful purchase info
             view.purchaseSuccessBanner();

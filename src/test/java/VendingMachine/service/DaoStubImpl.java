@@ -12,7 +12,8 @@ public class DaoStubImpl implements VendingMachineDao {
     public Item onlyItem;
 
     public DaoStubImpl() {
-        onlyItem = new Item("Doritos", new BigDecimal("1.23"), 9);
+        onlyItem = new Item("Doritos",
+                new BigDecimal("1.23"), 9);
     }
 
     public DaoStubImpl(Item testItem) {
@@ -20,7 +21,8 @@ public class DaoStubImpl implements VendingMachineDao {
     }
 
     @Override
-    public Item addItem(String itemName, Item item) throws PersistenceException {
+    public Item addItem(String itemName, Item item)
+            throws PersistenceException {
         if (itemName.equals(onlyItem.getItemName()))
             return onlyItem;
         else
@@ -51,7 +53,8 @@ public class DaoStubImpl implements VendingMachineDao {
     }
 
     @Override
-    public Item changeInventoryQuantity(Item item, int newQuantity) throws PersistenceException {
+    public Item changeInventoryQuantity(Item item, int newQuantity)
+            throws PersistenceException {
         if (item.getItemQuantity() == onlyItem.getItemQuantity())
             return onlyItem;
         else
