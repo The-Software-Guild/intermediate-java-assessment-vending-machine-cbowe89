@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface ServiceLayer {
-    Item getItem(Item item) throws
+    Item getItem(String itemName) throws
             PersistenceException,
             ItemInventoryException;
 

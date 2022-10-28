@@ -26,13 +26,10 @@ public class ServiceLayerImpl implements
     }
 
     @Override
-    public Item getItem(Item item) throws
+    public Item getItem(String itemName) throws
             PersistenceException,
             ItemInventoryException {
-        // Validate that item quantity is greater than 1
-        validateItemQuantity(item);
-
-        return vendingMachineDao.getItem(item.getItemName());
+        return vendingMachineDao.getItem(itemName);
     }
 
     @Override
@@ -69,7 +66,7 @@ public class ServiceLayerImpl implements
             ItemInventoryException,
             InsufficientFundsException {
         // Validate that item quantity is 1 or more
-        validateItemQuantity(item);
+        validateItemQuantity(item.getItemName());
 
         // Validate that totalFunds are greater than itemCost
         validateSufficientFunds(totalFunds, item.getItemCost());
@@ -81,11 +78,12 @@ public class ServiceLayerImpl implements
         return totalFunds = totalFunds.subtract(item.getItemCost());
     }
 
-    private void validateItemQuantity (Item item) throws
-            ItemInventoryException {
-        if (item.getItemQuantity() < 1) {
+    private void validateItemQuantity (String itemName) throws
+            ItemInventoryException, PersistenceException {
+        Item toValidate = vendingMachineDao.getItem(itemName);
+        if (toValidate.getItemQuantity() < 1) {
             throw new ItemInventoryException(
-                    "ERROR: " + item.getItemName() +
+                    "ERROR: " + itemName +
                             " Unavailable! Quantity is less than 1.");
         }
     }

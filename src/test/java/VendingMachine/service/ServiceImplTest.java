@@ -1,19 +1,11 @@
 package VendingMachine.service;
 
 import VendingMachine.dao.AuditDao;
-import VendingMachine.dao.AuditDaoImpl;
-import VendingMachine.dao.VendingMachineDao;
-import VendingMachine.dao.VendingMachineDaoFileImpl;
 import VendingMachine.dao.PersistenceException;
+import VendingMachine.dao.VendingMachineDao;
 import VendingMachine.dto.Item;
-import VendingMachine.service.ServiceLayer;
-import VendingMachine.service.ServiceLayerImpl;
-import VendingMachine.service.ItemInventoryException;
-import VendingMachine.service.InsufficientFundsException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,12 +17,15 @@ public class ServiceImplTest {
 
     public static ServiceLayer service;
 
-    public ServiceImplTest() {
+    public ServiceImplTest() throws PersistenceException {
+        VendingMachineDao dao = new DaoStubImpl();
+        AuditDao auditDao = new AuditDaoStubImpl();
+
+        service = new ServiceLayerImpl(dao, auditDao);
     }
 
     @BeforeAll
     public static void setUpClass() throws PersistenceException {
-        //implement
     }
 
     @AfterAll
@@ -39,7 +34,6 @@ public class ServiceImplTest {
 
     @BeforeEach
     public void setUp() throws PersistenceException {
-        //implement
     }
 
     @AfterEach
@@ -51,7 +45,19 @@ public class ServiceImplTest {
      */
     @Test
     public void testGetItem() throws Exception {
-        //implement
+        // ARRANGE
+        Item testClone = new Item("Doritos");
+        testClone.setItemCost(new BigDecimal("1.23"));
+        testClone.setItemQuantity(9);
+
+        // ACT & ASSERT
+        Item shouldBeDoritos = service.getItem("Doritos");
+        assertNotNull(shouldBeDoritos,
+                "Getting item 'shouldBeDoritos' should not be null.");
+        assertEquals(testClone, shouldBeDoritos,
+                "Item stored in 'shouldBeDoritos' should be Doritos.");
+        Item shouldBeNull = service.getItem("Peanuts");
+        assertNull(shouldBeNull, "Getting item 'Peanuts' should be null.");
     }
 
     /**
@@ -63,13 +69,13 @@ public class ServiceImplTest {
     }
 
     /**
-     * Test of changeInventoryCount method, of class VendingMachineServiceImpl.
+     * Test of changeInventoryCount method of VendingMachineServiceImpl
      */
     @Test
-    public void testChangeInventoryCount() {
+    public void testChangeInventoryQuantity() {
         Item testItem = new Item("Cheetos",
-                new BigDecimal(2.99).setScale(2,RoundingMode.FLOOR),
-                18);
+                new BigDecimal("2.99").setScale(2,
+                        RoundingMode.FLOOR), 18);
         try {
             service.changeInventoryQuantity(testItem, 100);
             assertNotNull(testItem, "Item should not be null");
