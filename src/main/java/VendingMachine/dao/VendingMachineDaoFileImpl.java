@@ -24,7 +24,6 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
     @Override
     public Item addItem(String itemName, Item item) throws
             PersistenceException {
-        itemMap = fileDao.readFile(ITEM_FILE);
         Item result = itemMap.put(item.getItemName(), item);
         fileDao.writeFile(new ArrayList<>(itemMap.values()));
         return result;
@@ -33,21 +32,18 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
     @Override
     public List<Item> getAllItems() throws
             PersistenceException {
-        itemMap = fileDao.readFile(ITEM_FILE);
         return new ArrayList<>(itemMap.values());
     }
 
     @Override
     public Item getItem(String name) throws
             PersistenceException {
-        itemMap = fileDao.readFile(ITEM_FILE);
         return itemMap.get(name);
     }
 
     @Override
     public Item removeItem(Item item) throws
             PersistenceException {
-        itemMap = fileDao.readFile(ITEM_FILE);
         Item result = itemMap.remove(item.getItemName());
         fileDao.writeFile(new ArrayList<>(itemMap.values()));
         return result;
@@ -57,7 +53,7 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
     public Item changeInventoryQuantity(Item item, int newCount) throws
             PersistenceException {
         item.setItemQuantity(newCount);
-        Item result = itemMap.put(item.getItemName(), item);
+        Item result = itemMap.replace(item.getItemName(), item);
         fileDao.writeFile(new ArrayList<>(itemMap.values()));
         return result;
     }

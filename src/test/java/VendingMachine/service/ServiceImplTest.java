@@ -83,6 +83,18 @@ public class ServiceImplTest {
     @Test
     public void testChangeInventoryQuantity() throws PersistenceException,
             ItemInventoryException, InsufficientFundsException {
+        /*
+        // ARRANGE
+        Item testClone = new Item("Doritos");
+        testClone.setItemCost(new BigDecimal("1.23"));
+        testClone.setItemQuantity(9);
+
+        // ACT & ASSERT
+        Item itemAfterSale = service.changeInventoryQuantity(testClone, 20);
+        assertNotNull(testClone,"Item should not be null.");
+        assertEquals(20, itemAfterSale.getItemQuantity());
+         */
+
         Item testItem = new Item("Cheetos",
                 new BigDecimal("2.99").setScale(2,RoundingMode.FLOOR),
                 18);
