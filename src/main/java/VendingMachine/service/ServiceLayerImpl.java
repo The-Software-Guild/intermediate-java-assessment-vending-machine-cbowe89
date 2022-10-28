@@ -9,13 +9,13 @@ import java.util.stream.Collectors;
 public class ServiceLayerImpl implements
         ServiceLayer {
 
-    private VendingMachineDao vendingMachineDao;
-    private AuditDao auditDao;
+    private final VendingMachineDao vendingMachineDao;
+    private final AuditDao auditDao;
 
     public ServiceLayerImpl() throws
             PersistenceException {
-        VendingMachineDao dao = new VendingMachineDaoFileImpl();
-        AuditDao auditDao = new AuditDaoImpl();
+        vendingMachineDao = new VendingMachineDaoFileImpl();
+        auditDao = new AuditDaoImpl();
     }
 
     public ServiceLayerImpl(VendingMachineDao vendingMachineDao,
