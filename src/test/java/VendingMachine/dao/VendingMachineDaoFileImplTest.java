@@ -69,7 +69,7 @@ class VendingMachineDaoFileImplTest {
     void testChangeItemQuantity() throws PersistenceException {
         Item water = testDao.getItem("Water");
         int quantityBefore = water.getItemQuantity();
-        testDao.changeItemQuantity(water,
+        testDao.changeInventoryQuantity(water,
                 water.getItemQuantity()-1);
         int quantityAfter = water.getItemQuantity();
         assertNotEquals(quantityBefore, quantityAfter,

@@ -19,7 +19,6 @@ public class DaoStubImpl implements VendingMachineDao {
         this.onlyItem= testItem;
     }
 
-
     @Override
     public Item addItem(String itemName, Item item) throws PersistenceException {
         if (itemName.equals(onlyItem.getItemName()))
@@ -52,8 +51,8 @@ public class DaoStubImpl implements VendingMachineDao {
     }
 
     @Override
-    public Item changeItemQuantity(Item item, int newQuantity) throws PersistenceException {
-        if (item.getItemName().equals(onlyItem.getItemName()))
+    public Item changeInventoryQuantity(Item item, int newQuantity) throws PersistenceException {
+        if (item.getItemQuantity() == onlyItem.getItemQuantity())
             return onlyItem;
         else
             return null;

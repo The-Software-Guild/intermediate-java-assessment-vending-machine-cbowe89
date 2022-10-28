@@ -64,30 +64,37 @@ public class ServiceImplTest {
      * Test of getAllItems method, of class VendingMachineServiceImpl.
      */
     @Test
-    public void testListAllItems() throws Exception {
-        assertEquals(8, service.getAllItems().size(), "8 items");
+    public void testGetAllItems() throws Exception {
+        // ARRANGE
+        Item testClone = new Item("Doritos");
+        testClone.setItemCost(new BigDecimal("1.23"));
+        testClone.setItemQuantity(9);
+
+        // ACT & ASSERT
+        assertEquals(1, service.getAllItems().size(),
+                "Should only have 1 item.");
+        assertTrue(service.getAllItems().contains(testClone),
+                "The 1 item should be Doritos.");
     }
 
     /**
      * Test of changeInventoryCount method of VendingMachineServiceImpl
      */
     @Test
-    public void testChangeInventoryQuantity() {
+    public void testChangeInventoryQuantity() throws PersistenceException {
         Item testItem = new Item("Cheetos",
-                new BigDecimal("2.99").setScale(2,
-                        RoundingMode.FLOOR), 18);
-        try {
+                new BigDecimal("2.99").setScale(2,RoundingMode.FLOOR), 18);
+        try{
             service.changeInventoryQuantity(testItem, 100);
             assertNotNull(testItem, "Item should not be null");
-            assertEquals(100, testItem.getItemQuantity(),
-                    "Inventory item should be 100");
-        } catch (PersistenceException e) {
+            assertEquals(100, testItem.getItemQuantity(), "Inventory item should be 100");
+        }catch(PersistenceException e){
             fail("No way it will go wrong");
         }
 
-        try {
+        try{
             service.changeInventoryQuantity(testItem, -100);
-        } catch (PersistenceException e) {
+        }catch(PersistenceException e){
             System.out.println("the value should not be negative");
         }
     }
@@ -96,7 +103,21 @@ public class ServiceImplTest {
      * Test of sellItem method, of class VendingMachineServiceImpl.
      */
     @Test
-    public void testSellItem() {
-        //implement
+    public void testSellItem() throws PersistenceException, InsufficientFundsException, ItemInventoryException {
+        // ARRANGE
+        Item testClone = new Item("Doritos");
+        testClone.setItemCost(new BigDecimal("1.23"));
+        testClone.setItemQuantity(9);
+        BigDecimal testBalance = new BigDecimal("10.00");
+        int beginningQuantity = testClone.getItemQuantity();
+
+        // ACT & ASSERT
+        service.sellItem(testBalance, testClone);
+        assertTrue(beginningQuantity > 0,
+                "Item quantity must be greater than 0 to sell item.");
+        assertTrue(testBalance.compareTo(testClone.getItemCost()) >= 0,
+                "Balance must be greater than or equal to item cost.");
+        assertEquals((beginningQuantity - 1), testClone.getItemQuantity(),
+                "Quantity should be 1 less than beginning quantity after sale.");
     }
 }

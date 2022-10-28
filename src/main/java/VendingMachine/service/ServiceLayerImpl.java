@@ -57,7 +57,7 @@ public class ServiceLayerImpl implements
             PersistenceException {
         auditDao.writeAuditEntry(item.getItemName() + " quantity updated to "
                 + newCount + ".");
-        vendingMachineDao.changeItemQuantity(item, newCount);
+        vendingMachineDao.changeInventoryQuantity(item, newCount);
     }
 
     @Override

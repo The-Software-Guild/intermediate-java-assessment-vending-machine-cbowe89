@@ -54,7 +54,7 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
     }
 
     @Override
-    public Item changeItemQuantity(Item item, int newCount) throws
+    public Item changeInventoryQuantity(Item item, int newCount) throws
             PersistenceException {
         item.setItemQuantity(newCount);
         Item result = itemMap.put(item.getItemName(), item);

@@ -12,7 +12,6 @@ import static VendingMachine.dto.Coins.NICKEL;
 import static VendingMachine.dto.Coins.PENNY;
 
 public class Change {
-    //private HashMap<Coins, Integer> coinChangeMap = new HashMap<>();
     private static HashMap<Coins, Integer> coinChangeMap = new HashMap<>();
 
     public Change(HashMap<Coins, Integer> change) {
