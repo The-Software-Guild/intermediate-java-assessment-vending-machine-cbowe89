@@ -118,7 +118,6 @@ public class ServiceImplTest {
 
         // ACT & ASSERT
         BigDecimal balanceAfterSale = service.sellItem(testBalance, testClone);
-        Item itemAfterSale = service.getItem(testClone.getItemName());
         assertTrue(testQuantityAfterChange >= 0,
                 "Item quantity must be greater than 0 to sell item.");
         assertTrue(testBalance.compareTo(testClone.getItemCost()) >= 0,
