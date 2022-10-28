@@ -17,7 +17,7 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
     public VendingMachineDaoFileImpl(String vendingMachineTextFile)
             throws PersistenceException{
         ITEM_FILE = vendingMachineTextFile;
-        fileDao = new FileDaoImpl();
+        fileDao = new FileDaoImpl(ITEM_FILE);
         itemMap = fileDao.readFile(ITEM_FILE);
     }
 
