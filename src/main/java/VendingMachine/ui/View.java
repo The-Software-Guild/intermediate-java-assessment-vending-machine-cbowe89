@@ -35,8 +35,8 @@ public class View {
         addFundsBanner();
         displayBalance(balance);
         balance = balance.add(io.readBigDecimal(
-                "Enter funds to add ($0 - $100): ",
-                new BigDecimal(0), new BigDecimal(100)));
+                "Enter funds to add ($0.01 - $100.00): ",
+                new BigDecimal("0.01"), new BigDecimal("100.00")));
         fundsAddedMessage();
         displayBalance(balance);
         io.readString("Please hit enter to continue.");
