@@ -5,7 +5,6 @@ import VendingMachine.dao.PersistenceException;
 import VendingMachine.dao.VendingMachineDao;
 import VendingMachine.dto.Item;
 import java.math.BigDecimal;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,9 +18,6 @@ public class ServiceImplTest {
     // Declare ServiceLayer object
     public static ServiceLayer service;
 
-    /**
-     * No-args constructor for ServiceImplTest
-     */
     public ServiceImplTest() throws PersistenceException {
         VendingMachineDao dao = new DaoStubImpl();
         AuditDao auditDao = new AuditDaoStubImpl();
@@ -112,9 +108,10 @@ public class ServiceImplTest {
         assertEquals(testClone.getItemQuantity(), 9,
                 "testClone quantity before sale should be 9.");
         BigDecimal balanceAfterSale = service.sellItem(testBalance, testClone);
+        Item result = service.getItem("Doritos");
         assertTrue(testClone.getItemQuantity() >= 0,
                 "Item quantity must be greater than 0 to sell item.");
-        assertEquals(testClone.getItemQuantity(), 8,
+        assertEquals(result.getItemQuantity(), 8,
                 "testClone quantity after sale should be 8");
         assertTrue(testBalance.compareTo(testClone.getItemCost()) >= 0,
                 "Balance must be greater than or equal to item cost.");

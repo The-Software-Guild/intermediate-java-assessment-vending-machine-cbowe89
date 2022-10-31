@@ -30,10 +30,8 @@ public class ServiceLayerImpl implements ServiceLayer {
      * objects, creates a ServiceLayerImpl object
      * @param vendingMachineDao VendingMachineDao object
      * @param auditDao AuditDao object
-     * @throws PersistenceException if error occurs with file
      */
-    public ServiceLayerImpl(VendingMachineDao vendingMachineDao, AuditDao auditDao)
-            throws PersistenceException {
+    public ServiceLayerImpl(VendingMachineDao vendingMachineDao, AuditDao auditDao) {
         this.vendingMachineDao = vendingMachineDao;
         this.auditDao = auditDao;
     }
@@ -46,8 +44,7 @@ public class ServiceLayerImpl implements ServiceLayer {
      */
     @Override
     public Item getItem(String itemName) throws
-            PersistenceException,
-            ItemInventoryException {
+            PersistenceException {
         return vendingMachineDao.getItem(itemName);
     }
 
@@ -98,11 +95,11 @@ public class ServiceLayerImpl implements ServiceLayer {
      * @throws PersistenceException if error occurs writing to the file
      */
     @Override
-    public Item changeInventoryQuantity(Item item, int newCount) throws
+    public void changeInventoryQuantity(Item item, int newCount) throws
             PersistenceException {
         auditDao.writeAuditEntry(item.getItemName() + " quantity updated to "
                 + newCount + ".");
-        return vendingMachineDao.changeInventoryQuantity(item, newCount);
+        vendingMachineDao.changeInventoryQuantity(item, newCount);
     }
 
     /**
@@ -136,7 +133,7 @@ public class ServiceLayerImpl implements ServiceLayer {
         changeInventoryQuantity(item, item.getItemQuantity()-1);
 
         // Return totalFunds minus itemCost
-        return totalFunds = totalFunds.subtract(item.getItemCost());
+        return totalFunds.subtract(item.getItemCost());
     }
 
     /**

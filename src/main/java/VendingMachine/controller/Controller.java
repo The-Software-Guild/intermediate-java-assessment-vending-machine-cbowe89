@@ -92,7 +92,7 @@ public class Controller {
                             try {
                                 balance = purchaseItems(balance, itemList);
                             } catch (ItemInventoryException |
-                                    InsufficientFundsException e) {
+                                     InsufficientFundsException e) {
                                 view.displayBalance(balance);
                                 view.displayErrorMessage(e.getMessage());
                             }

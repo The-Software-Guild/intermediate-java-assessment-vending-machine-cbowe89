@@ -20,7 +20,7 @@ public enum Coins {
      * NoConstructor for Coins
      * @param value value of Coins
      */
-    private Coins(BigDecimal value) {
+    Coins(BigDecimal value) {
         this.value = value;
     }
 
