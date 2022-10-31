@@ -6,20 +6,16 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ServiceLayerImpl implements
-        ServiceLayer {
-
+public class ServiceLayerImpl implements ServiceLayer {
     private final VendingMachineDao vendingMachineDao;
     private final AuditDao auditDao;
 
-    public ServiceLayerImpl() throws
-            PersistenceException {
+    public ServiceLayerImpl() throws PersistenceException {
         vendingMachineDao = new VendingMachineDaoFileImpl();
         auditDao = new AuditDaoImpl();
     }
 
-    public ServiceLayerImpl(VendingMachineDao vendingMachineDao,
-                            AuditDao auditDao)
+    public ServiceLayerImpl(VendingMachineDao vendingMachineDao, AuditDao auditDao)
             throws PersistenceException {
         this.vendingMachineDao = vendingMachineDao;
         this.auditDao = auditDao;
@@ -74,7 +70,7 @@ public class ServiceLayerImpl implements
         // Allow dao to sell item: subtract 1 from quantity
         // and subtract item cost from totalFunds
         auditDao.writeAuditEntry("1 " + item.getItemName() + " sold.");
-        //changeInventoryQuantity(item, item.getItemQuantity()-1);
+        changeInventoryQuantity(item, item.getItemQuantity()-1);
         return totalFunds = totalFunds.subtract(item.getItemCost());
     }
 

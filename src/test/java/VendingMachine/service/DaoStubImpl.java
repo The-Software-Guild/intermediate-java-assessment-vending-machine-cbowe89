@@ -55,8 +55,10 @@ public class DaoStubImpl implements VendingMachineDao {
     @Override
     public Item changeInventoryQuantity(Item item, int newQuantity)
             throws PersistenceException {
-        if (item.getItemQuantity() == onlyItem.getItemQuantity())
+        if (item.getItemQuantity() + newQuantity >= 0) {
+            onlyItem.setItemQuantity(newQuantity);
             return onlyItem;
+        }
         else
             return null;
     }

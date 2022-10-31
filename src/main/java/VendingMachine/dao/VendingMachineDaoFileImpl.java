@@ -4,9 +4,9 @@ import VendingMachine.dto.Item;
 import java.util.*;
 
 public class VendingMachineDaoFileImpl implements VendingMachineDao {
-    private String ITEM_FILE;
-    private FileDao fileDao;
-    private Map<String, Item> itemMap;
+    private final String ITEM_FILE;
+    private final FileDao fileDao;
+    private final Map<String, Item> itemMap;
 
     public VendingMachineDaoFileImpl() throws PersistenceException {
         ITEM_FILE = "items.txt";

@@ -5,11 +5,8 @@ import VendingMachine.dao.PersistenceException;
 import VendingMachine.dao.VendingMachineDao;
 import VendingMachine.dto.Item;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,16 +21,10 @@ public class ServiceImplTest {
         service = new ServiceLayerImpl(dao, auditDao);
     }
 
-    @BeforeAll
-    public static void setUpClass() throws PersistenceException {
-    }
-
-    @AfterAll
-    public static void tearDownClass() {
-    }
-
     @BeforeEach
     public void setUp() throws PersistenceException {
+        //Item testItem = new Item("Doritos", new BigDecimal("1.23"), 9);
+        //service.addItem(testItem);
     }
 
     @AfterEach
@@ -83,35 +74,17 @@ public class ServiceImplTest {
     @Test
     public void testChangeInventoryQuantity() throws PersistenceException,
             ItemInventoryException, InsufficientFundsException {
-        /*
+
         // ARRANGE
         Item testClone = new Item("Doritos");
         testClone.setItemCost(new BigDecimal("1.23"));
         testClone.setItemQuantity(9);
 
         // ACT & ASSERT
-        Item itemAfterSale = service.changeInventoryQuantity(testClone, 20);
+        service.changeInventoryQuantity(testClone, 20);
+        Item itemAfterSale = service.getItem("Doritos");
         assertNotNull(testClone,"Item should not be null.");
         assertEquals(20, itemAfterSale.getItemQuantity());
-         */
-
-        Item testItem = new Item("Cheetos",
-                new BigDecimal("2.99").setScale(2,RoundingMode.FLOOR),
-                18);
-        try{
-            service.changeInventoryQuantity(testItem, 100);
-            assertNotNull(testItem, "Item should not be null");
-            assertEquals(100, testItem.getItemQuantity(),
-                    "Inventory item should be 100");
-        }catch(PersistenceException e){
-            fail("No way it will go wrong");
-        }
-
-        try{
-            service.changeInventoryQuantity(testItem, -100);
-        }catch(PersistenceException e){
-            System.out.println("the value should not be negative");
-        }
     }
 
     /**
@@ -126,12 +99,15 @@ public class ServiceImplTest {
         testClone.setItemCost(new BigDecimal("1.23"));
         testClone.setItemQuantity(9);
         BigDecimal testBalance = new BigDecimal("10.00");
-        int testQuantityAfterChange = testClone.getItemQuantity() - 1;
 
         // ACT & ASSERT
+        assertEquals(testClone.getItemQuantity(), 9,
+                "testClone quantity before sale should be 9.");
         BigDecimal balanceAfterSale = service.sellItem(testBalance, testClone);
-        assertTrue(testQuantityAfterChange >= 0,
+        assertTrue(testClone.getItemQuantity() >= 0,
                 "Item quantity must be greater than 0 to sell item.");
+        assertEquals(testClone.getItemQuantity(), 8,
+                "testClone quantity after sale should be 8");
         assertTrue(testBalance.compareTo(testClone.getItemCost()) >= 0,
                 "Balance must be greater than or equal to item cost.");
         assertEquals(balanceAfterSale, testBalance.subtract(testClone.getItemCost()),

@@ -7,6 +7,9 @@ import VendingMachine.dto.Item;
 import VendingMachine.service.InsufficientFundsException;
 import VendingMachine.service.ItemInventoryException;
 import VendingMachine.service.ServiceLayer;
+import VendingMachine.service.ServiceLayerImpl;
+import VendingMachine.ui.UserIO;
+import VendingMachine.ui.UserIOConsoleImpl;
 import VendingMachine.ui.View;
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -22,11 +25,13 @@ import java.util.List;
 public class Controller {
 
     // Declare VendingMachineView and VendingMachineServiceLayer objects
-    private View view;
-    private ServiceLayer serviceLayer;
+    private final View view;
+    private final ServiceLayer serviceLayer;
 
     public Controller() throws PersistenceException {
-        // implement
+        UserIO io = new UserIOConsoleImpl();
+        view = new View(io);
+        serviceLayer = new ServiceLayerImpl();
     }
 
     /**
@@ -132,8 +137,6 @@ public class Controller {
 
             // Sell Item
             balance = serviceLayer.sellItem(balance, purchasedItem);
-            purchasedItem = serviceLayer.changeInventoryQuantity(purchasedItem,
-                    purchasedItem.getItemQuantity()-1);
 
             // Display successful purchase info
             view.purchaseSuccessBanner();
