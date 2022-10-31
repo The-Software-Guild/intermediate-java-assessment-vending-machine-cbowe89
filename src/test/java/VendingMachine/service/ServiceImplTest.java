@@ -18,7 +18,7 @@ public class ServiceImplTest {
     // Declare ServiceLayer object
     public static ServiceLayer service;
 
-    public ServiceImplTest() throws PersistenceException {
+    public ServiceImplTest() {
         VendingMachineDao dao = new DaoStubImpl();
         AuditDao auditDao = new AuditDaoStubImpl();
 
@@ -26,9 +26,7 @@ public class ServiceImplTest {
     }
 
     @BeforeEach
-    public void setUp() throws PersistenceException {
-        //Item testItem = new Item("Doritos", new BigDecimal("1.23"), 9);
-        //service.addItem(testItem);
+    public void setUp() {
     }
 
     @AfterEach
@@ -77,7 +75,7 @@ public class ServiceImplTest {
      */
     @Test
     public void testChangeInventoryQuantity() throws PersistenceException,
-            ItemInventoryException, InsufficientFundsException {
+            ItemInventoryException {
 
         // ARRANGE
         Item testClone = new Item("Doritos");

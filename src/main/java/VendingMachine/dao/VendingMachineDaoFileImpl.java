@@ -57,7 +57,6 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
     /**
      * Returns list of all Item objects in the Item map
      * @return ArrayList of Item objects
-     * @throws PersistenceException if error occurs with file
      */
     @Override
     public List<Item> getAllItems() {
@@ -68,7 +67,6 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
      * Returns an individual Item from the item map
      * @param name String name of Item
      * @return Item object
-     * @throws PersistenceException if error occurs with file
      */
     @Override
     public Item getItem(String name) {
