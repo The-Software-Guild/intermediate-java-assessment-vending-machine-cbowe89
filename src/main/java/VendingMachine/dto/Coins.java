@@ -11,7 +11,7 @@ public enum Coins {
 
     private final BigDecimal value;
 
-    private Coins(BigDecimal value) {
+    Coins(BigDecimal value) {
         this.value = value;
     }
 

@@ -23,7 +23,7 @@ public class AuditDaoImpl implements AuditDao {
         }
 
         LocalDateTime timestamp = LocalDateTime.now();
-        out.println(timestamp.toString() + " : " + entry);
+        out.println(timestamp + " : " + entry);
         out.flush();
     }
 }

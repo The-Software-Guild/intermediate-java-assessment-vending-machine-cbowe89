@@ -30,14 +30,12 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
     }
 
     @Override
-    public List<Item> getAllItems() throws
-            PersistenceException {
+    public List<Item> getAllItems() {
         return new ArrayList<>(itemMap.values());
     }
 
     @Override
-    public Item getItem(String name) throws
-            PersistenceException {
+    public Item getItem(String name) {
         return itemMap.get(name);
     }
 

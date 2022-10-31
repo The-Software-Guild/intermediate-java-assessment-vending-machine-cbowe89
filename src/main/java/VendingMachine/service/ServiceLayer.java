@@ -19,7 +19,7 @@ public interface ServiceLayer {
     Item removeItem(Item item) throws
             PersistenceException;
 
-    Item changeInventoryQuantity(Item item, int newCount) throws
+    void changeInventoryQuantity(Item item, int newCount) throws
             PersistenceException;
 
     BigDecimal sellItem(BigDecimal totalFunds, Item item) throws

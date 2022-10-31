@@ -57,9 +57,6 @@ public class UserIOConsoleImpl implements UserIO {
      */
     @Override
     public int readInt(String prompt) {
-        //System.out.println(prompt);
-        //return Integer.parseInt(sc.nextLine());
-
         boolean invalidInput = true;
         int num = 0;
         while (invalidInput) {
@@ -109,9 +106,6 @@ public class UserIOConsoleImpl implements UserIO {
      */
     @Override
     public BigDecimal readBigDecimal(String prompt) {
-        //System.out.println(prompt);
-        //return new BigDecimal(sc.nextLine());
-
         boolean invalidInput = true;
         BigDecimal num = new BigDecimal("0.0");
         while (invalidInput) {

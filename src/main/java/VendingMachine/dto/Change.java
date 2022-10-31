@@ -38,7 +38,6 @@ public class Change {
 
         int pennies = funds.divide(PENNY.getValue(), RoundingMode.DOWN).intValue();
         coinChangeMap.put(PENNY, pennies);
-        funds = funds.subtract(PENNY.getValue().multiply(BigDecimal.valueOf(pennies)));
 
         return coinChangeMap;
     }

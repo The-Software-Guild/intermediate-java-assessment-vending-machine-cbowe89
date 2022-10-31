@@ -39,10 +39,8 @@ public class Controller {
      * via dependency injection.
      * @param view VendingMachineView object
      * @param serviceLayer VendingMachineService object
-     * @throws PersistenceException Checked exception
      */
-    public Controller(View view, ServiceLayer serviceLayer)
-            throws PersistenceException {
+    public Controller(View view, ServiceLayer serviceLayer) {
         // Initialize View and Service
         this.view = view;
         this.serviceLayer = serviceLayer;
@@ -57,7 +55,7 @@ public class Controller {
 
         // Declare and initialize variables
         boolean runApplication = true;
-        int startMenuSelection = 0, mainMenuSelection = 0;
+        int startMenuSelection, mainMenuSelection;
         List<Item> itemList = serviceLayer.getAllItems(); // List of all items
 
         // Display welcome banner and item list
@@ -120,7 +118,7 @@ public class Controller {
             ItemInventoryException,
             InsufficientFundsException {
         // Declare and initialize variables
-        int itemSelection = 0;
+        int itemSelection;
 
         if (balance.compareTo(new BigDecimal(0)) < 1) {
             throw new InsufficientFundsException("Add money to make a purchase!");
