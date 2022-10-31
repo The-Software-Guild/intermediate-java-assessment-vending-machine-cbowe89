@@ -95,10 +95,11 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
      * @throws PersistenceException if error occurs writing to file
      */
     @Override
-    public void changeInventoryQuantity(Item item, int newCount) throws
+    public Item changeInventoryQuantity(Item item, int newCount) throws
             PersistenceException {
         item.setItemQuantity(newCount);
-        itemMap.replace(item.getItemName(), item);
+        Item result = itemMap.replace(item.getItemName(), item);
         fileDao.writeFile(new ArrayList<>(itemMap.values()));
+        return result;
     }
 }

@@ -95,11 +95,11 @@ public class ServiceLayerImpl implements ServiceLayer {
      * @throws PersistenceException if error occurs writing to the file
      */
     @Override
-    public void changeInventoryQuantity(Item item, int newCount) throws
+    public Item changeInventoryQuantity(Item item, int newCount) throws
             PersistenceException {
         auditDao.writeAuditEntry(item.getItemName() + " quantity updated to "
                 + newCount + ".");
-        vendingMachineDao.changeInventoryQuantity(item, newCount);
+        return vendingMachineDao.changeInventoryQuantity(item, newCount);
     }
 
     /**
