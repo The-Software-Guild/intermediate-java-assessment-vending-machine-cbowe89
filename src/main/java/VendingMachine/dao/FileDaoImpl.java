@@ -146,7 +146,7 @@ public class FileDaoImpl implements FileDao {
             // Initialize PrintWriter object
             // Initialize FileWriter object with ITEM_FILE name and
             // boolean true to append information to file
-            out = new PrintWriter(new FileWriter(ITEM_FILE, true));
+            out = new PrintWriter(new FileWriter(ITEM_FILE));
 
             // Initialize variable to store String representation of Item objects
             String itemAsText;

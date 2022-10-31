@@ -40,7 +40,7 @@ public class AuditDaoImpl implements AuditDao {
         LocalDateTime timestamp = LocalDateTime.now();
 
         // Write the time stamp and audit log entry to the file
-        out.println(timestamp + " : " + entry);
+        out.println(timestamp.toString() + " : " + entry);
 
         // Force PrintWriter to write line to the file
         out.flush();

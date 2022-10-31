@@ -57,9 +57,11 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
     /**
      * Returns list of all Item objects in the Item map
      * @return ArrayList of Item objects
+     * @throws PersistenceException if error occurs with file
      */
     @Override
-    public List<Item> getAllItems() {
+    public List<Item> getAllItems() throws
+            PersistenceException {
         return new ArrayList<>(itemMap.values());
     }
 
@@ -67,9 +69,11 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
      * Returns an individual Item from the item map
      * @param name String name of Item
      * @return Item object
+     * @throws PersistenceException if error occurs with file
      */
     @Override
-    public Item getItem(String name) {
+    public Item getItem(String name) throws
+            PersistenceException {
         return itemMap.get(name);
     }
 
@@ -78,7 +82,7 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
      * the item file
      * @param item Item object
      * @return Item object removed from map
-     * @throws PersistenceException if error occurs writing to file
+     * @throws PersistenceException if error occurs with file
      */
     @Override
     public Item removeItem(Item item) throws
@@ -92,7 +96,7 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
      * Changes the Item object's quantity, writes info to the item file
      * @param item Item object
      * @param newCount new item quantity
-     * @throws PersistenceException if error occurs writing to file
+     * @throws PersistenceException if error occurs with file
      */
     @Override
     public Item changeInventoryQuantity(Item item, int newCount) throws

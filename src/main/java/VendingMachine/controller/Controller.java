@@ -53,6 +53,7 @@ public class Controller {
 
     /**
      * Method controls the application
+     * @throws PersistenceException if error occurs with file
      */
     public void run() throws PersistenceException {
         // Declare and initialize beginning balance of $0.00
@@ -91,7 +92,7 @@ public class Controller {
                             try {
                                 balance = purchaseItems(balance, itemList);
                             } catch (ItemInventoryException |
-                                     InsufficientFundsException e) {
+                                    InsufficientFundsException e) {
                                 view.displayBalance(balance);
                                 view.displayErrorMessage(e.getMessage());
                             }
@@ -138,7 +139,7 @@ public class Controller {
             throws PersistenceException,
             ItemInventoryException,
             InsufficientFundsException {
-        // Declare variable for item selection
+        // Declare and initialize variables
         int itemSelection;
 
         // if balance is $0.00, user must add funds first

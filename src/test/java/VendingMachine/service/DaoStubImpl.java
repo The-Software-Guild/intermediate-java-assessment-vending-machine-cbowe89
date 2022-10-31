@@ -1,5 +1,6 @@
 package VendingMachine.service;
 
+import VendingMachine.dao.PersistenceException;
 import VendingMachine.dao.VendingMachineDao;
 import VendingMachine.dto.Item;
 
@@ -20,7 +21,8 @@ public class DaoStubImpl implements VendingMachineDao {
     }
 
     @Override
-    public Item addItem(String itemName, Item item) {
+    public Item addItem(String itemName, Item item)
+            throws PersistenceException {
         if (itemName.equals(onlyItem.getItemName()))
             return onlyItem;
         else
@@ -28,14 +30,14 @@ public class DaoStubImpl implements VendingMachineDao {
     }
 
     @Override
-    public List<Item> getAllItems() {
+    public List<Item> getAllItems() throws PersistenceException {
         List<Item> itemList = new ArrayList<>();
         itemList.add(onlyItem);
         return itemList;
     }
 
     @Override
-    public Item getItem(String itemName) {
+    public Item getItem(String itemName) throws PersistenceException {
         if (itemName.equals(onlyItem.getItemName()))
             return onlyItem;
         else
@@ -43,7 +45,7 @@ public class DaoStubImpl implements VendingMachineDao {
     }
 
     @Override
-    public Item removeItem(Item item) {
+    public Item removeItem(Item item) throws PersistenceException {
         if (item.getItemName().equals(onlyItem.getItemName()))
             return onlyItem;
         else
@@ -51,7 +53,8 @@ public class DaoStubImpl implements VendingMachineDao {
     }
 
     @Override
-    public Item changeInventoryQuantity(Item item, int newQuantity) {
+    public Item changeInventoryQuantity(Item item, int newQuantity)
+            throws PersistenceException {
         if (item.getItemQuantity() + newQuantity >= 0) {
             onlyItem.setItemQuantity(newQuantity);
             return onlyItem;

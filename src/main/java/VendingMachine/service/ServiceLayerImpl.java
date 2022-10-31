@@ -30,8 +30,10 @@ public class ServiceLayerImpl implements ServiceLayer {
      * objects, creates a ServiceLayerImpl object
      * @param vendingMachineDao VendingMachineDao object
      * @param auditDao AuditDao object
+     * @throws PersistenceException if error occurs with file
      */
-    public ServiceLayerImpl(VendingMachineDao vendingMachineDao, AuditDao auditDao) {
+    public ServiceLayerImpl(VendingMachineDao vendingMachineDao, AuditDao auditDao)
+            throws PersistenceException {
         this.vendingMachineDao = vendingMachineDao;
         this.auditDao = auditDao;
     }
@@ -44,7 +46,8 @@ public class ServiceLayerImpl implements ServiceLayer {
      */
     @Override
     public Item getItem(String itemName) throws
-            PersistenceException {
+            PersistenceException,
+            ItemInventoryException {
         return vendingMachineDao.getItem(itemName);
     }
 
@@ -127,13 +130,13 @@ public class ServiceLayerImpl implements ServiceLayer {
         validateSufficientFunds(totalFunds, item.getItemCost());
 
         // Write audit entry
-        auditDao.writeAuditEntry("1 " + item.getItemName() + " sold.");
         // Allow dao to sell item: subtract 1 from quantity
         // and subtract item cost from totalFunds
+        auditDao.writeAuditEntry("1 " + item.getItemName() + " sold.");
         changeInventoryQuantity(item, item.getItemQuantity()-1);
 
         // Return totalFunds minus itemCost
-        return totalFunds.subtract(item.getItemCost());
+        return totalFunds = totalFunds.subtract(item.getItemCost());
     }
 
     /**

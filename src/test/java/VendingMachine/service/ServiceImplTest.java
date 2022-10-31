@@ -5,6 +5,9 @@ import VendingMachine.dao.PersistenceException;
 import VendingMachine.dao.VendingMachineDao;
 import VendingMachine.dto.Item;
 import java.math.BigDecimal;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,11 +22,21 @@ public class ServiceImplTest {
     /**
      * No-args constructor for ServiceImplTest
      */
-    public ServiceImplTest() {
+    public ServiceImplTest() throws PersistenceException {
         VendingMachineDao dao = new DaoStubImpl();
         AuditDao auditDao = new AuditDaoStubImpl();
 
         service = new ServiceLayerImpl(dao, auditDao);
+    }
+
+    @BeforeEach
+    public void setUp() throws PersistenceException {
+        //Item testItem = new Item("Doritos", new BigDecimal("1.23"), 9);
+        //service.addItem(testItem);
+    }
+
+    @AfterEach
+    public void tearDown() {
     }
 
     /**
@@ -68,7 +81,7 @@ public class ServiceImplTest {
      */
     @Test
     public void testChangeInventoryQuantity() throws PersistenceException,
-            ItemInventoryException {
+            ItemInventoryException, InsufficientFundsException {
 
         // ARRANGE
         Item testClone = new Item("Doritos");
