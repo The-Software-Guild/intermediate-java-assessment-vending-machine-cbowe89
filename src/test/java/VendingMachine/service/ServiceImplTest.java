@@ -8,10 +8,17 @@ import java.math.BigDecimal;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * The {@code ServiceImplTest} class is responsible for
+ * testing the ServiceLayerImpl class.
+ */
 public class ServiceImplTest {
-
+    // Declare ServiceLayer object
     public static ServiceLayer service;
 
+    /**
+     * No-args constructor for ServiceImplTest
+     */
     public ServiceImplTest() {
         VendingMachineDao dao = new DaoStubImpl();
         AuditDao auditDao = new AuditDaoStubImpl();

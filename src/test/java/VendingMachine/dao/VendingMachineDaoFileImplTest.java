@@ -12,10 +12,18 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * The {@code VendingMachineDaoFileImplTest} class is responsible for
+ * testing the VendingMachineDaoFileImpl class.
+ */
 class VendingMachineDaoFileImplTest {
 
+    // Declare VendingMachineDao object
     public static VendingMachineDao testDao;
 
+    /**
+     * No-args constructor for VendingMachineDaoFileImplTest class
+     */
     public VendingMachineDaoFileImplTest() {
     }
 
