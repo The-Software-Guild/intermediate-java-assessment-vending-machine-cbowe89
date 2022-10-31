@@ -23,8 +23,8 @@ public class UserIOConsoleImpl implements UserIO {
     }
 
     /**
-     * Prints formatted string. Used for printing item name
-     * and item price.
+     * Prints formatted string. Used for printing item number,
+     * name, and price.
      * @param num Item number
      * @param str Item name
      * @param bigDecimal Item price
