@@ -28,6 +28,11 @@ public class Controller {
     private final View view;
     private final ServiceLayer serviceLayer;
 
+    /**
+     * Controller constructor: initializes View and ServiceLayer
+     * object by creating new instances of the objects.
+     * @throws PersistenceException if error occurs writing file
+     */
     public Controller() throws PersistenceException {
         UserIO io = new UserIOConsoleImpl();
         view = new View(io);
@@ -56,7 +61,8 @@ public class Controller {
         // Declare and initialize variables
         boolean runApplication = true;
         int startMenuSelection, mainMenuSelection;
-        List<Item> itemList = serviceLayer.getAllItems(); // List of all items
+        // List of all items with qty > 0
+        List<Item> itemList = serviceLayer.getAllItems();
 
         // Display welcome banner and item list
         view.displayWelcomeBanner();
@@ -84,7 +90,8 @@ public class Controller {
                         {
                             try {
                                 balance = purchaseItems(balance, itemList);
-                            } catch (ItemInventoryException | InsufficientFundsException e) {
+                            } catch (ItemInventoryException |
+                                     InsufficientFundsException e) {
                                 view.displayBalance(balance);
                                 view.displayErrorMessage(e.getMessage());
                             }
@@ -109,44 +116,70 @@ public class Controller {
         }
     }
 
+    /**
+     * Method for user to add funds to VendingMachine
+     * @param balance Passes current balance
+     * @return balance after funds are added
+     */
     private BigDecimal addFunds(BigDecimal balance) {
         return view.addFundsDisplay(balance);
     }
 
+    /**
+     * Method for user to purchase items
+     * @param balance current balance
+     * @param itemList list of all in-stock items
+     * @return balance after purchase
+     * @throws PersistenceException if error occurs writing file
+     * @throws ItemInventoryException if item quantity is invalid
+     * @throws InsufficientFundsException if balance is insufficient
+     */
     private BigDecimal purchaseItems(BigDecimal balance, List<Item> itemList)
             throws PersistenceException,
             ItemInventoryException,
             InsufficientFundsException {
-        // Declare and initialize variables
+        // Declare variable for item selection
         int itemSelection;
 
+        // if balance is $0.00, user must add funds first
         if (balance.compareTo(new BigDecimal(0)) < 1) {
             throw new InsufficientFundsException("Add money to make a purchase!");
         }
-        else {
+        else { // Allow user to purchase item
+            // Display purchaseItem banner
             view.purchaseItemBanner();
 
             // Re-display items for ease of use
             view.displayAllItems(itemList);
 
-            // Get itemSelection, store as purchasedItem
+            // Get itemSelection, store Item object as purchasedItem
             itemSelection = view.getItemSelection(itemList.size());
             Item purchasedItem = itemList.get(itemSelection - 1);
 
-            // Sell Item
+            // Sell Item - updates item quantity in file, changes user balance
             balance = serviceLayer.sellItem(balance, purchasedItem);
 
-            // Display successful purchase info
+            // Display successful purchase banner
             view.purchaseSuccessBanner();
+            // Display remaining balance
             view.displayPurchase(purchasedItem, balance);
 
+            // Calculate change from remaining balance, display
+            // coins to be dispensed as change
             HashMap<Coins, Integer> changeMap = Change.getChange(balance);
             view.printChange(changeMap);
         }
 
+        // Balance set to zero do to remainder dispensed as change
         return balance = new BigDecimal(0);
     }
 
+    /**
+     * Method to dispense change if balance is > 0 when user wants
+     * to quit the VendingMachine
+     * @param balance current user balance
+     * @throws InsufficientFundsException if balance is insufficient
+     */
     private void quit(BigDecimal balance)
             throws InsufficientFundsException {
         // Dispense change before exiting if balance is greater than $0.00
