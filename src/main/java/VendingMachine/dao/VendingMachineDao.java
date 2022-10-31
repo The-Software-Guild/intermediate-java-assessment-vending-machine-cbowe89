@@ -17,6 +17,6 @@ public interface VendingMachineDao {
     Item removeItem(Item item) throws
             PersistenceException;
 
-    Item changeInventoryQuantity(Item item, int newQuantity) throws
+    void changeInventoryQuantity(Item item, int newQuantity) throws
             PersistenceException;
 }

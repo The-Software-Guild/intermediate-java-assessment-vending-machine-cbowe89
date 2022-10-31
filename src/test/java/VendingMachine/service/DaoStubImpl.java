@@ -51,12 +51,9 @@ public class DaoStubImpl implements VendingMachineDao {
     }
 
     @Override
-    public Item changeInventoryQuantity(Item item, int newQuantity) {
+    public void changeInventoryQuantity(Item item, int newQuantity) {
         if (item.getItemQuantity() + newQuantity >= 0) {
             onlyItem.setItemQuantity(newQuantity);
-            return onlyItem;
         }
-        else
-            return null;
     }
 }
